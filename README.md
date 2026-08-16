@@ -1,142 +1,114 @@
-# 🏍️ RidingBikeSystem
+#  RidingBikeSystem
 
-[![Java Version](https://img.shields.io/badge/Java-17%2B-orange.svg)](https://www.oracle.com/java/)
-[![Maven](https://img.shields.io/badge/Maven-3.8%2B-blue.svg)](https://maven.apache.org/)
-[![Hibernate](https://img.shields.io/badge/Hibernate-6.4.4-red.svg)](https://hibernate.org/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16%2B-blue.svg)](https://www.postgresql.org/)
+(A Corporate Fleet & Ride-Hailing Management System)
 
-A robust, console-based **Ride Booking Application** implemented in Java using Hibernate ORM (JPA) and PostgreSQL database. The system allows managing users, drivers, vehicles, booking/completing rides, processing wallet-based transactions, and viewing structured performance reports.
+An enterprise-ready, console-driven Ride Allocation and Booking Platform built on Java. This architecture leverages Hibernate Object-Relational Mapping (ORM) to handle persistence logic over a local PostgreSQL database instance. The application provides comprehensive controls for orchestrating users, managing driver groups, deploying vehicles, executing real-time trip booking workflows, updating wallets, and aggregating analytical system logs.
 
----
+## 📌 Architectural Features & Capabilities
 
-## 🚀 Features
+The system exposes a secure, structured Command Line Interface (CLI) partitioned into clear functional modules:
 
-The system offers a comprehensive CLI menu divided into administrative and customer operations:
+### 1. Consumer Directory Management
+* Registration Engine:Provision new accounts complete with runtime email pattern validations.
+* Global Inventory: Fetch structured registries of all consumers currently saved inside the schema.
+* Information Upgrades: Hot-swap or update user metadata profiles dynamically (Names, Contact Lines, Electronic Mail addresses).
+* Profile Deprovisioning:Safely delete consumers from the active lookup arrays.
+* Targeted Lookups: Index individual profile rows directly via primary sequence identifier keys.
 
-1. **👤 Manage Users**
-   - Add new users with email validation (`@Email`)
-   - View all registered users
-   - Update user details (name, email, phone number)
-   - Delete users
-   - Query user by ID
+### 2. Service-Provider Operations
+* Driver Onboarding: Inject certified service providers into the persistent storage engine.
+* Availability Tracking: Track real-time driver state transitions through structural indicators (`AVAILABLE`, `BUSY`, `OFFLINE`).
+* Operator Updates: Modify, edit, or strip driver entities dynamically out of the environment.
 
-2. **🚗 Manage Drivers**
-   - Register drivers
-   - Track driver status (`AVAILABLE`, `BUSY`, `OFFLINE`)
-   - Update/Delete drivers
-   - Query driver by ID
+### 3. Fleet Assets & Logistics
+* Vehicle Onboarding: Track and catalog company vehicles categorized across multiple deployment tiers (`BIKE`, `AUTO`, `CAB`).
+* Dynamic Linking: Bind and balance vehicles directly to independent drivers via strict transactional relationships.
 
-3. **🚲 Manage Vehicles**
-   - Register vehicles with type categorization (`BIKE`, `AUTO`, `CAB`)
-   - Link vehicles to drivers
-   - Update/Delete vehicles
+### 4. Trip Orchestration Engine
+* Matching Logic: Process ride inquiries by evaluating geographic parameters against active, unassigned operator sets.
+* Trip Lifecycle Termination: Automated systems to calculate fares, drop vehicle status flags back to active availability arrays, and trigger financial workflows.
+* Lifecycle Interruption: Safely cancel pending or active requests while rolling back associated entity states.
 
-4. **🗺️ Manage Rides**
-   - Book a ride by matching users and available drivers
-   - Complete rides (automatically updates driver status and processes payments)
-   - Cancel rides
-   - Track ride history
-
-5. **💳 Transactions**
-   - Automatic transaction generation on ride completion
-   - View transaction details and logs
-
-6. **📊 Reports Panel**
-   - Ride history of a specific user
-   - Completed rides of a specific driver
-   - Transaction statements for users
-   - Filter drivers by status (`AVAILABLE`, `BUSY`, `OFFLINE`)
-
-7. **🛡️ Advanced Features**
-   - Add money to user wallet
-   - Reassign a vehicle to a driver dynamically
+### 5. Financial Ledger & Diagnostics
+* Automated Bookkeeping: Generates structured immutable financial entries the exact moment a trip is finalized.
+* Analytical Reporting: Generate isolated consumer trip statements, isolate complete records matching specific operator keys, track audit trails, or sort operators utilizing availability criteria.
 
 ---
 
-## 🛠️ Tech Stack & Architecture
+## 🛠 Integrated Technology Stack
 
-- **Language**: Java 17+
-- **Database**: PostgreSQL (JDBC Driver `42.7.7`)
-- **ORM Framework**: Hibernate Core `6.4.4.Final` (JPA 3.1)
-- **Validation**: Hibernate Validator `8.0.2.Final`
-- **Build Tool**: Maven
+* Platform Environment: Java 17 Development Kit or higher
+* Relational Database Engine: PostgreSQL (Supported via native JDBC Driver version 42.7.7)
+* Persistence Layer (ORM): Hibernate Framework 6.4.4.Final (Adhering to Jakarta Persistence JPA 3.1 specifications)
+* Data Ingestion Constraints: Hibernate Validator 8.0.2.Final
+* Dependency & Dependency Management: Apache Maven
 
-### Database Schema Entity Relationships
-
-```mermaid
-erDiagram
-    Users ||--o{ Ride : "books"
-    Users ||--o{ Transaction : "makes"
-    Driver ||--|| Vehicle : "drives"
-    Driver ||--o{ Ride : "serves"
-    Ride ||--o| Transaction : "generates"
-```
-
-- **Users**: Consists of `id`, `name`, `email` (validated), `phoneNumber`, and `wallet` balance.
-- **Driver**: Consists of `id`, `name`, `phoneNumber`, `status` (`DriverStatus` enum), and a one-to-one relationship with `Vehicle`.
-- **Vehicle**: Consists of `id`, `vehicleNumber`, `model`, `type` (`VehicleType` enum), and owner `Driver`.
-- **Ride**: Consists of `id`, `source`, `destination`, `fare`, `status` (`RideStatus` enum), associated `Users`, and `Driver`.
-- **Transaction**: Consists of `id`, `transactionMode` (`TransactionMode` enum), `amount`, `timestamp`, and associated `Users`.
+### Structural Relational Entity Model
+* Users: Maps demographic profiles, unique identifier columns, strict contact strings, and real-time wallet balances.
+* Driver: Manages personal data fields, dynamic operator status parameters, and a explicit 1-to-1 data link mapping to specific fleet machinery.
+* Vehicle: Holds license parameters, internal manufacturing designations, category flags, and a back-reference owner binding to a specific operator.
+* Ride: Contains geographic points, fare totals, transactional lifecycle indicators, associated consumers, and field references to assigned drivers.
+* Transaction: Encapsulates unique record tracking arrays, payment mode markers, transaction sums, calendar timestamps, and target consumer handles.
 
 ---
 
-## ⚙️ Setup & Configuration
+## ⚙️ Initial Startup & Local Topology Setup
 
-### Prerequisites
-1. **Java Development Kit (JDK)** 17 or higher.
-2. **Apache Maven** installed and added to your system path.
-3. **PostgreSQL** database server running locally.
+### Workspace Requirements
+1. Java Development Kit (JDK) version 17+ configured within system environment arrays.
+2. Apache Maven build tool compiled and discoverable via command terminal paths.
+3. A local PostgreSQL database engine active and listening on standard local ports.
 
-### 1. Database Setup
-Create a PostgreSQL database named `rideBookingSystem`:
+### 1. Schema Provisioning
+Connect to your native database client and initialize the core structural layer:
 ```sql
 CREATE DATABASE "rideBookingSystem";
 ```
 
-### 2. Configure Hibernate (JPA)
-Edit the [persistence.xml](src/main/resources/META-INF/persistence.xml) file to update your database credentials if different:
+### 2. Configuration Settings
+Navigate to the resources package array and launch `persistence.xml` within a plain-text editor to provide local endpoint security details:
 ```xml
 <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/rideBookingSystem"/>
 <property name="jakarta.persistence.jdbc.user" value="postgres"/>
 <property name="jakarta.persistence.jdbc.password" value="YOUR_PASSWORD"/>
 ```
-*Note: The `hibernate.hbm2ddl.auto` setting is set to `update`, which will automatically create the tables on the first run.*
+*System Notice: The environment relies on the automated schema updates engine (`update`), meaning physical relational tables and primary arrays deploy on the initial compilation cycle automatically.*
 
 ---
 
-## 🏃 Running the Application
+## 🏃 Execution Commands
 
-### Build the Project
-Compile the project and resolve all Maven dependencies:
+### Compile and Resolve Project Packages
+To download dependencies and run compiler optimizations over your code workspace:
 ```bash
 mvn clean compile
 ```
 
-### Execute the CLI Application
-Run the main driver class:
+### Bootstrap the Application Loop
+To launch the core engine runtime and trigger the entry point thread class, invoke:
 ```bash
 mvn exec:java -Dexec.mainClass="com.ride.main.RideDriver"
 ```
 
 ---
 
-## 📂 Project Structure
+## 📂 Logical Workspace Directories
 
-```
+```text
 RidingBikeSystem/
 ├── src/
 │   ├── main/
 │   │   ├── java/
 │   │   │   └── com/ride/
-│   │   │       ├── dao/          # Database Access Objects (CRUD helpers)
-│   │   │       ├── entity/       # JPA Entities (User, Driver, Ride, etc.)
-│   │   │       ├── enums/        # Status and categorization enums
-│   │   │       ├── service/      # Main business logic layer
-│   │   │       └── main/         # Entry points (RideDriver & Hibernate Config)
+│   │   │       ├── dao/          # Storage Objects managing baseline CRUD statements
+│   │   │       ├── entity/       # Structural JPA database mapping records
+│   │   │       ├── enums/        # System category sets and state variables
+│   │   │       ├── service/      # Transactional rules and calculation engine
+│   │   │       └── main/         # Application bootstrap thread and configuration loaders
 │   │   └── resources/
 │   │       └── META-INF/
-│   │           └── persistence.xml  # JPA persistence configuration
-│   └── test/                     # Unit & Integration tests
-├── pom.xml                       # Maven dependency management
-└── .gitignore                    # Git file exclusions
+│   │           └── persistence.xml  # JPA driver routing configurations
+│   └── test/                     # Functional evaluation layers
+├── pom.xml                       # Dependency management descriptors
+└── .gitignore                    # Automation ignore arrays
 ```
